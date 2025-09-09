@@ -54,7 +54,7 @@ const timeago = datetime.isBefore(dayjs().subtract(1, 'w'))
     )
   }
   {
-    channelName && (
+    channelName && (!enableComments || !(comments?.images?.length > 0)) && (
       <div class="pages-container">
         <div class="pages-info"></div>
         <a
@@ -70,14 +70,21 @@ const timeago = datetime.isBefore(dayjs().subtract(1, 'w'))
     )
   }
   {
-    enableComments && comments?.images?.length > 0 && (
+    enableComments && (comments?.images?.length > 0 || comments?.videos?.length > 0) && (
       <details class="comments-wrap">
-        <summary>展开评论图片（{comments.images.length}）</summary>
+        <summary>展开更多（{(comments.images?.length || 0) + (comments.videos?.length || 0)}）</summary>
         <div class="image-box">
-          {comments.images.map((src) => (
+          {comments.images?.map((src) => (
             <img src={src} alt={`comment image ${post.id}`} loading="lazy" />
           ))}
         </div>
+        {comments.videos?.length > 0 && (
+          <div class="video-box" style="padding-top: 0;">
+            {comments.videos.map((src) => (
+              <video src={src} controls preload="metadata" playsinline webkit-playsinline style="max-width: 100%; border-radius: var(--media-border-radius);"></video>
+            ))}
+          </div>
+        )}
       </details>
     )
   }

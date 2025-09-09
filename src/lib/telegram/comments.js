@@ -10,13 +10,13 @@ import { getEnv } from '../env'
  */
 export async function getComments(Astro, { id, limit = 50 } = {}) {
   try {
-    if (!id) return { images: [] }
+    if (!id) return { images: [], videos: [] }
 
     const host = getEnv(import.meta.env, Astro, 'HOST') ?? 't.me'
     const channel = getEnv(import.meta.env, Astro, 'CHANNEL')
     const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 
-    if (!channel) return { images: [] }
+    if (!channel) return { images: [], videos: [] }
 
     // Step 1: Load post embed page to discover the discussion link
     const postUrl = `https://${host}/${channel}/${id}?embed=1&mode=tme`
@@ -44,7 +44,7 @@ export async function getComments(Astro, { id, limit = 50 } = {}) {
     }
 
     if (!discussionPath) {
-      return { images: [] }
+      return { images: [], videos: [] }
     }
 
     // Step 2: Load discussion thread (embed) to parse comments
@@ -54,6 +54,7 @@ export async function getComments(Astro, { id, limit = 50 } = {}) {
 
     // Step 3: Extract images from messages under discussion
     const images = []
+    const videos = []
     $('.tgme_widget_message_wrap .tgme_widget_message')
       .slice(0, limit)
       .each((_index, item) => {
@@ -62,12 +63,20 @@ export async function getComments(Astro, { id, limit = 50 } = {}) {
           const url = styleVal.match(/url\(["'](.*?)["']\)/)?.[1]
           if (url) images.push(staticProxy + url)
         }
+
+        // Extract standard/round videos (skip animated stickers)
+        const vid = $(item).find('.tgme_widget_message_video_wrap video')
+        const round = $(item).find('.tgme_widget_message_roundvideo_wrap video')
+        const vsrc = vid.attr('src')
+        const rsrc = round.attr('src')
+        if (vsrc) videos.push(staticProxy + vsrc)
+        if (rsrc) videos.push(staticProxy + rsrc)
       })
 
-    return { images }
+    return { images, videos }
   }
   catch {
-    return { images: [] }
+    return { images: [], videos: [] }
   }
 }
 
