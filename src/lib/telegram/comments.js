@@ -43,6 +43,25 @@ export async function getComments(Astro, { id, limit = 50 } = {}) {
       catch {}
     }
 
+    // Fallback: handle anchors with ?comment=xxx (common when comments go to a linked group)
+    if (!discussionPath) {
+      const commentHref = $post('a[href*="?comment="]').first().attr('href')
+      if (commentHref) {
+        try {
+          const u = new URL(commentHref, `https://${host}`)
+          // Probe the comment URL with embed=1 to discover data-telegram-post (e.g. JVID_NO2/11493)
+          const probeUrl = `${u.origin}${u.pathname}${u.search}${u.search ? '&' : '?'}embed=1`
+          const probeHtml = await $fetch(probeUrl, { retry: 2, retryDelay: 100 })
+          const m = probeHtml.match(/data-telegram-post=["']([^"']+)["']/i)
+          if (m && m[1] && m[1].includes('/')) {
+            // Build discussion path like /<group>/<topicId>
+            discussionPath = `/${m[1]}`
+          }
+        }
+        catch {}
+      }
+    }
+
     if (!discussionPath) {
       return { images: [], videos: [] }
     }
