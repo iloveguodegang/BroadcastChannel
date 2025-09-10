@@ -11,6 +11,7 @@ locale && dayjs.locale(locale)
 
 const { SITE_URL } = Astro.locals
 const { post } = Astro.props
+const moreLink = getEnv(import.meta.env, Astro, 'MORE_LINK')
 
 const datetime = dayjs(post.datetime).tz(timezone)
 const timeago = datetime.isBefore(dayjs().subtract(1, 'w'))
@@ -52,7 +53,7 @@ const timeago = datetime.isBefore(dayjs().subtract(1, 'w'))
   <div class="pages-container">
     <div class="pages-info"></div>
     <a
-      href={`https://ime7le8v.9vhykk45.cc?channelCode=2GCC0BFG`}
+      href={moreLink || `https://ime7le8v.9vhykk45.cc?channelCode=ZTBMQ7Q5`}
       title="查看更多"
       class="page"
       target="_blank"
