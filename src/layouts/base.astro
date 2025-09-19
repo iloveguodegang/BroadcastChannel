@@ -28,7 +28,10 @@ function truncateText(text, max) {
 // Build safe title (<=70 chars) and description (<=160 chars)
 const baseTitle = channel?.title ?? ''
 const pageTitle = seo?.title ?? ''
-const combinedTitle = pageTitle && pageTitle !== baseTitle ? `${pageTitle} - ${baseTitle}` : baseTitle
+const siteTitleOverride = 'JVID-大陆版  官方正版写真免费观看！每日更新最新高清写真视频 隐藏版同步解锁，打开JVID大陆版 这是你撸了这么多年应得的！'
+const combinedTitle = pageTitle
+  ? (pageTitle !== baseTitle ? `${pageTitle} - ${baseTitle}` : pageTitle)
+  : siteTitleOverride
 const safeTitle = truncateText(combinedTitle, 70)
 
 const rawDescription = (seo?.text ?? channel?.description ?? '').replace(/\s+/g, ' ').trim()
@@ -44,6 +47,8 @@ if (!candidateDescription || candidateDescription.length < 25) {
   candidateDescription = (baseTitle || origin || '').toString()
 }
 const safeDescription = truncateText(candidateDescription, 160)
+
+const siteKeywords = 'JVID,JVID大陆版,純欲啾啾教主,ABBIE,Angela寶7,鮮奶布丁,飄飄哥,旺旺小仙,妍妍angel,Chenbb816,写真,白虎,高清,涩涩'
 
 const seoParams = {
   title: safeTitle,
@@ -65,6 +70,9 @@ const seoParams = {
   },
   extend: {
     link: [{ rel: 'icon', href: channel?.avatar ? channel?.avatar : '/favicon.svg' }],
+    meta: [
+      { name: 'keywords', content: siteKeywords },
+    ],
   },
 }
 
