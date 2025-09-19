@@ -21,6 +21,15 @@ const channel = {
 
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 
+function truncateText(text, max) {
+  if (!text) return ''
+  const str = String(text).trim()
+  if (str.length <= max) return str
+  return str.slice(0, Math.max(0, max - 1)) + '…'
+}
+
+const h1Title = truncateText(post?.title ?? channelInfo?.title ?? '', 150)
+
 export const prerender = false
 ---
 
@@ -38,6 +47,7 @@ export const prerender = false
       <a href={SITE_URL} class="site-title" title={channel?.title}>
         {channel.title}
       </a>
+      <h1 class="post-title">{h1Title}</h1>
     </div>
   </div>
 </List>

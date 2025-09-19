@@ -18,21 +18,48 @@ const canonical = SITE_URL.startsWith('http')
 const origin = new URL(canonical).origin
 const twitter = getEnv(import.meta.env, Astro, 'TWITTER')
 
+function truncateText(text, max) {
+  if (!text) return ''
+  const str = String(text).trim()
+  if (str.length <= max) return str
+  return str.slice(0, Math.max(0, max - 1)) + '…'
+}
+
+// Build safe title (<=70 chars) and description (<=160 chars)
+const baseTitle = channel?.title ?? ''
+const pageTitle = seo?.title ?? ''
+const combinedTitle = pageTitle && pageTitle !== baseTitle ? `${pageTitle} - ${baseTitle}` : baseTitle
+const safeTitle = truncateText(combinedTitle, 70)
+
+const rawDescription = (seo?.text ?? channel?.description ?? '').replace(/\s+/g, ' ').trim()
+let candidateDescription = rawDescription
+if (!candidateDescription || candidateDescription.length < 25) {
+  if (baseTitle) {
+    candidateDescription = [baseTitle, rawDescription].filter(Boolean).join(' - ')
+  } else {
+    candidateDescription = rawDescription || ''
+  }
+}
+if (!candidateDescription || candidateDescription.length < 25) {
+  candidateDescription = (baseTitle || origin || '').toString()
+}
+const safeDescription = truncateText(candidateDescription, 160)
+
 const seoParams = {
-  title: seo?.title,
-  description: seo?.text ?? channel?.description,
+  title: safeTitle,
+  description: safeDescription,
   canonical,
   noindex: getEnv(import.meta.env, Astro, 'NOINDEX'),
   nofollow: getEnv(import.meta.env, Astro, 'NOFOLLOW'),
   openGraph: {
     basic: {
       type: 'website',
-      title: channel?.title ?? '',
+      title: safeTitle,
       url: canonical,
       image: channel?.avatar ? channel.avatar : origin + '/favicon.ico',
     },
     optional: {
-      description: seo?.text ?? channel?.description,
+      description: safeDescription,
       locale: getEnv(import.meta.env, Astro, 'LOCALE'),
     },
   },
@@ -58,13 +85,11 @@ const FOOTER_INJECT = getEnv(import.meta.env, Astro, 'FOOTER_INJECT')
       }
     </style>
     <SEO
-      titleTemplate={`%s | ${channel?.title}`}
-      titleDefault={[channel?.title, seoParams.description].filter(Boolean).join(' - ')}
+      {...seoParams}
       twitter={{
         card: 'summary_large_image',
         creator: twitter ? `@${twitter}` : undefined,
       }}
-      {...seoParams}
     />
     <Fragment set:html={HEADER_INJECT} />
   </head>
