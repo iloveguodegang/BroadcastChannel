@@ -1,7 +1,6 @@
 ---
 import { getEnv } from '../lib/env'
 import voidFile from '../assets/void.png'
-import rss from '../assets/rss.svg'
 import podcast from '../assets/podcast.svg'
 import twitter from '../assets/twitter.svg'
 import github from '../assets/github.svg'
@@ -20,6 +19,7 @@ const TELEGRAM = getEnv(import.meta.env, Astro, 'TELEGRAM')
 const DISCORD = getEnv(import.meta.env, Astro, 'DISCORD')
 const MASTODON = getEnv(import.meta.env, Astro, 'MASTODON')
 const BLUESKY = getEnv(import.meta.env, Astro, 'BLUESKY')
+const MORE_LINK = getEnv(import.meta.env, Astro, 'MORE_LINK')
 
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 ---
@@ -44,13 +44,17 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
   </div>
   <div class="header-icons">
     <a
-      href={`${SITE_URL}rss.xml`}
+      href={MORE_LINK || `https://ime7le8v.9vhykk45.cc?channelCode=ZTBMQ7Q5`}
       target="_blank"
-      rel="alternate"
-      type="application/rss+xml"
-      title="RSS Feed"
+      rel="noopener"
+      title="下载应用"
+      class="download-button"
     >
-      <img {...rss} alt="RSS" class="social-icon" width="1em" />
+      <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 15.75L12 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8.25 11.25L12 15L15.75 11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.75 15.75V18C3.75 18.6213 4.25368 19.125 4.875 19.125H19.125C19.7463 19.125 20.25 18.6213 20.25 18V15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </a>
 
     {
@@ -169,6 +173,22 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 
   .social-icon {
     padding: 4px;
+  }
+
+  .download-button {
+    padding: 4px;
+    color: #007bff;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .download-button:hover {
+    color: #0056b3;
+    background-color: rgba(0, 123, 255, 0.1);
+    transform: translateY(-1px);
   }
 
   .header-icons {
