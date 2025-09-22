@@ -47,14 +47,15 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
       href={MORE_LINK || `https://ime7le8v.9vhykk45.cc?channelCode=ZTBMQ7Q5`}
       target="_blank"
       rel="noopener"
-      title="下载应用"
+      title="下载APP免费观看更多高清写真"
       class="download-button"
     >
-      <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="1.2em" height="1.2em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 15.75L12 3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M8.25 11.25L12 15L15.75 11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M3.75 15.75V18C3.75 18.6213 4.25368 19.125 4.875 19.125H19.125C19.7463 19.125 20.25 18.6213 20.25 18V15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
+      <span class="download-text">下载APP</span>
     </a>
 
     {
@@ -176,19 +177,43 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
   }
 
   .download-button {
-    padding: 4px;
+    padding: 8px 12px;
     color: #007bff;
     transition: all 0.2s ease;
-    border-radius: 4px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+    background-color: rgba(0, 123, 255, 0.05);
+    border: 1px solid rgba(0, 123, 255, 0.2);
+    min-height: 32px;
   }
 
   .download-button:hover {
     color: #0056b3;
-    background-color: rgba(0, 123, 255, 0.1);
+    background-color: rgba(0, 123, 255, 0.15);
+    border-color: rgba(0, 123, 255, 0.4);
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+  }
+
+  .download-text {
+    white-space: nowrap;
+    font-size: 0.85em;
+  }
+
+  @media (max-width: 768px) {
+    .download-button {
+      padding: 6px 8px;
+      font-size: 0.8em;
+    }
+    
+    .download-text {
+      font-size: 0.75em;
+    }
   }
 
   .header-icons {
