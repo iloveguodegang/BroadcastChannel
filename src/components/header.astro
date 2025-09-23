@@ -2,6 +2,7 @@
 import { getEnv } from '../lib/env'
 import voidFile from '../assets/void.png'
 import podcast from '../assets/podcast.svg'
+import Banner from './banner.astro'
 import twitter from '../assets/twitter.svg'
 import github from '../assets/github.svg'
 import discord from '../assets/discord.svg'
@@ -160,6 +161,11 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
   )
 }
 
+<!-- Mobile banner grid -->
+<div class="mobile-banner">
+  <Banner />
+</div>
+
 <style>
   #site-intro {
     color: var(--secondary-color);
@@ -218,5 +224,17 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 
   .header-icons {
     gap: 2px;
+  }
+
+  /* Mobile banner styling */
+  .mobile-banner {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-banner {
+      display: block;
+      margin-top: 16px;
+    }
   }
 </style>
