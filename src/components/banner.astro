@@ -1,44 +1,44 @@
 ---
 // Banner component for displaying icon grid
-// Reads icon configuration from banner folder
-import { readFileSync, readdirSync } from 'fs'
-import { join } from 'path'
-
-// Read icon configuration
-const bannerPath = join(process.cwd(), 'src/banner')
-let icons = []
-
-try {
-  const iconsFile = readFileSync(join(bannerPath, 'icons.md'), 'utf-8')
-  
-  // Parse icons from markdown
-  const iconBlocks = iconsFile.split(/## Icon \d+/).slice(1)
-  
-  icons = iconBlocks.map((block, index) => {
-    const lines = block.trim().split('\n')
-    const icon = { order: index + 1 }
-    
-    lines.forEach(line => {
-      if (line.includes('**Name**:')) {
-        icon.name = line.split('**Name**:')[1].trim()
-      } else if (line.includes('**Icon**:')) {
-        icon.icon = line.split('**Icon**:')[1].trim()
-      } else if (line.includes('**Link**:')) {
-        icon.link = line.split('**Link**:')[1].trim()
-      } else if (line.includes('**Order**:')) {
-        icon.order = parseInt(line.split('**Order**:')[1].trim())
-      }
-    })
-    
-    return icon
-  }).filter(icon => icon.name && icon.icon && icon.link)
-  
-  // Sort by order
-  icons.sort((a, b) => a.order - b.order)
-} catch (error) {
-  console.warn('Could not read banner icons:', error)
-  icons = []
-}
+// Static icon configuration
+const icons = [
+  {
+    name: "JVID官方",
+    icon: "jvid-official.svg",
+    link: "https://example.com",
+    order: 1
+  },
+  {
+    name: "高清写真",
+    icon: "hd-photos.svg",
+    link: "https://example.com",
+    order: 2
+  },
+  {
+    name: "会员专区",
+    icon: "vip-zone.svg",
+    link: "https://example.com",
+    order: 3
+  },
+  {
+    name: "最新视频",
+    icon: "new-videos.svg",
+    link: "https://example.com",
+    order: 4
+  },
+  {
+    name: "热门推荐",
+    icon: "hot-recommend.svg",
+    link: "https://example.com",
+    order: 5
+  },
+  {
+    name: "免费观看",
+    icon: "free-watch.svg",
+    link: "https://example.com",
+    order: 6
+  }
+]
 
 const { SITE_URL } = Astro.locals
 ---
@@ -54,7 +54,7 @@ const { SITE_URL } = Astro.locals
     >
       <div class="banner-icon">
         <img 
-          src={`${SITE_URL}banner/icons/${icon.icon}`}
+          src={`/banner/icons/${icon.icon}`}
           alt={icon.name}
           loading="lazy"
         />
