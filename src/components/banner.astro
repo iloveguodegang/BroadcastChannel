@@ -129,43 +129,29 @@ const { SITE_URL } = Astro.locals
   /* Mobile responsive */
   @media (max-width: 768px) {
     .banner-grid {
-      display: flex !important; /* Override desktop hidden state */
-      gap: 8px;
-      overflow-x: auto;
-      padding: 12px;
-      grid-template-columns: none;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-    }
-
-    .banner-grid::-webkit-scrollbar {
-      height: 4px;
-    }
-
-    .banner-grid::-webkit-scrollbar-track {
-      background: var(--border-color);
-      border-radius: 2px;
-    }
-
-    .banner-grid::-webkit-scrollbar-thumb {
-      background: var(--secondary-color);
-      border-radius: 2px;
+      display: grid !important; /* Override desktop hidden state */
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 12px;
+      padding: 16px;
+      width: 100%;
+      min-height: auto;
+      overflow: visible;
     }
 
     .banner-item {
-      flex-shrink: 0;
-      width: 60px;
-      padding: 6px;
+      width: auto;
+      padding: 8px;
     }
 
     .banner-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 4px;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 6px;
     }
 
     .banner-name {
-      font-size: 0.7em;
+      font-size: 0.75em;
     }
   }
 </style>
