@@ -155,11 +155,16 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
   </div>
 </div>
 
-{
-  channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
+<div class="intro-section">
+  {channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
     <div class="text-box" id="site-intro" set:html={channel?.descriptionHTML} />
-  )
-}
+  )}
+  
+  <!-- Desktop banner grid on the right -->
+  <div class="desktop-banner">
+    <Banner />
+  </div>
+</div>
 
 <!-- Mobile banner grid -->
 <div class="mobile-banner">
@@ -226,15 +231,46 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
     gap: 2px;
   }
 
+  /* Intro section layout */
+  .intro-section {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  #site-intro {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  /* Desktop banner styling */
+  .desktop-banner {
+    display: block;
+    flex: 0 0 auto;
+  }
+
   /* Mobile banner styling */
   .mobile-banner {
     display: none;
   }
 
   @media (max-width: 768px) {
+    .intro-section {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .desktop-banner {
+      display: none;
+    }
+
     .mobile-banner {
       display: block;
       margin-top: 16px;
+    }
+
+    #site-intro {
+      margin-bottom: 20px;
     }
   }
 </style>

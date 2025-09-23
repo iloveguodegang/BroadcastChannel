@@ -2,7 +2,6 @@
 import Layout from '../layouts/base.astro'
 import Header from '../components/header.astro'
 import Item from '../components/item.astro'
-import Banner from '../components/banner.astro'
 
 const { SITE_URL } = Astro.locals
 const { channel, before = true, after = true } = Astro.props
@@ -16,9 +15,6 @@ const afterCursor = posts[0]?.id
 <Layout channel={channel} id="main-container">
   <slot name="header">
     <Header channel={channel} />
-  </slot>
-  <slot name="aside">
-    <Banner />
   </slot>
   <div class="items">
     {posts.map((post) => <Item post={post} />)}
